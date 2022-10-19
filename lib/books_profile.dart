@@ -45,7 +45,7 @@ class BooksProfile extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        FlatButton(
+                        TextButton(
                           onPressed: () {},
                           child: Text(
                             "EDIT",

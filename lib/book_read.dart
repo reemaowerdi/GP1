@@ -70,7 +70,7 @@ class BooksRead extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          FlatButton.icon(
+                          TextButton.icon(
                             onPressed: () {},
                             icon: Icon(
                               Icons.bookmark,

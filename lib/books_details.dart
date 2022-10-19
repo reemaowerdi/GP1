@@ -226,7 +226,7 @@ class BooksDetails extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100),
                           color: Color(0xffc44536),
                         ),
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -256,7 +256,7 @@ class BooksDetails extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100),
                           color: Color(0xffc44536),
                         ),
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () => Navigator.push(
                             context,
                             MaterialPageRoute(
