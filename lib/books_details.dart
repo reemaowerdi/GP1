@@ -1,23 +1,14 @@
-import 'package:AudioBooks/book_read.dart';
-import 'package:AudioBooks/books_listen.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'book_data.dart';
+import 'package:read_me_a_story/book_read.dart';
+
 import 'book_model.dart';
 
 class BooksDetails extends StatelessWidget {
-  final int index;
-  final String section;
+  final Book book;
 
-  BooksDetails({this.index, this.section});
+  const BooksDetails({super.key, required this.book}); //page of book cover
   @override
   Widget build(BuildContext context) {
-    List<Book> bookList;
-    if (section == "Continue Reading") {
-      bookList = recentBooks;
-    } else if (section == "Discover More") {
-      bookList = allBooks;
-    }
     return Scaffold(
       backgroundColor: Color(0xfffff8ee),
       body: Container(
@@ -30,14 +21,17 @@ class BooksDetails extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
+                      //book details page layout
                       padding: EdgeInsets.symmetric(
                         vertical: 30,
                         horizontal: 20,
                       ),
                       child: Row(
+                        //alighnment of buttons
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
+                            //back arrow on book details
                             icon: Icon(
                               Icons.arrow_back,
                               color: Colors.black,
@@ -46,6 +40,7 @@ class BooksDetails extends StatelessWidget {
                             onPressed: () => Navigator.of(context).pop(),
                           ),
                           IconButton(
+                            //fav button
                             icon: Icon(
                               Icons.favorite_border,
                               color: Colors.black,
@@ -60,11 +55,13 @@ class BooksDetails extends StatelessWidget {
                       margin: EdgeInsets.only(
                         bottom: 30,
                       ),
-                      height: MediaQuery.of(context).size.height * 0.32,
+                      height: MediaQuery.of(context).size.height *
+                          0.30, //size of cover
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Stack(
                         children: [
                           Container(
+                            //dec of book cover
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
@@ -86,18 +83,18 @@ class BooksDetails extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Image.asset(
-                                // "assets/images/0.jfif",
-                                bookList[index].coverImage,
+                                "assets/images/booksphoto.webp",
                                 fit: BoxFit.fill,
                               ),
                             ),
                           ),
                           Container(
+                            // dec of book cover
                             height: double.infinity,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              gradient: new LinearGradient(
+                              gradient: LinearGradient(
                                 colors: [
                                   Colors.black.withOpacity(0.3),
                                   Colors.transparent,
@@ -112,65 +109,26 @@ class BooksDetails extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      // "Conjure Women",
-                      bookList[index].name,
+                      //book title
+                      book.title,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      //"By Afia Atakora",
-                      "By ${bookList[index].name}",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SmoothStarRating(
-                          rating: 3,
-                          // bookList[index].rating
-                          isReadOnly: false,
-                          size: 25,
-                          filledIconData: Icons.star,
-                          halfFilledIconData: Icons.star_half,
-                          defaultIconData: Icons.star_border,
-                          starCount: 5,
-                          allowHalfRating: true,
-                          spacing: 2.0,
-                          onRated: (value) {
-                            print(value);
-                          },
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "4.0",
-                          // bookList[index].rating.toString(),
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        )
-                      ],
-                    ),
                     Container(
+                      //the rec
                       margin: EdgeInsets.all(24),
                       height: 8,
                       width: 100,
                       decoration: BoxDecoration(
-                        color: Colors.teal,
+                        color: Color(0xffc44536),
                         borderRadius: BorderRadius.circular(100),
                       ),
                     ),
                     Expanded(
+                      //story under cover book
                       child: SingleChildScrollView(
                         child: Container(
                           padding: EdgeInsets.only(
@@ -179,7 +137,7 @@ class BooksDetails extends StatelessWidget {
                             right: 20,
                           ),
                           child: Text(
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            book.content, //to retrieve story
                             style: TextStyle(
                               fontSize: 20,
                               letterSpacing: 1.5,
@@ -194,6 +152,7 @@ class BooksDetails extends StatelessWidget {
               ),
             ),
             Positioned(
+              //position of read, listen buttons
               bottom: 0,
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.15,
@@ -213,10 +172,12 @@ class BooksDetails extends StatelessWidget {
                 ),
                 child: Center(
                   child: Row(
+                    //at the middle
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
+                        //listen and read button shape
                         width: 150,
                         height: 60,
                         padding: EdgeInsets.symmetric(
@@ -228,9 +189,12 @@ class BooksDetails extends StatelessWidget {
                         ),
                         child: TextButton(
                           onPressed: () => Navigator.push(
+                            //to navigate and read content
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BooksRead(),
+                              builder: (context) => BooksRead(
+                                book: book,
+                              ),
                             ),
                           ),
                           child: Text(
@@ -257,15 +221,7 @@ class BooksDetails extends StatelessWidget {
                           color: Color(0xffc44536),
                         ),
                         child: TextButton(
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BooksListen(
-                                index: index,
-                                section: section,
-                              ),
-                            ),
-                          ),
+                          onPressed: () {},
                           child: Text(
                             "LISTEN",
                             style: TextStyle(
