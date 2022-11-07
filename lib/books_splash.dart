@@ -1,91 +1,81 @@
-import 'package:AudioBooks/book_home.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:read_me_a_story/book_home.dart';
 
 class BooksSplash extends StatelessWidget {
+  const BooksSplash({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        //background of first page
         alignment: Alignment.centerRight,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              "assets/images/splash3.png",
+              "assets/images/firstpage.JPG",
             ),
-            fit: BoxFit.cover,
+            fit: BoxFit.cover, //to fit the page
           ),
         ),
-        child: SafeArea(
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 30,
-              horizontal: 40,
-            ),
-            width: MediaQuery.of(context).size.width * 0.8,
-            height: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color(0xffC44536),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text(
-                        "read\nlisten\nget Inspired",
-                        style: TextStyle(
-                          height: 1.75,
-                          letterSpacing: 2,
-                          color: Color(0xffC44536),
-                          fontSize: 32,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(40),
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Color(0xffC44536),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.navigate_next,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BooksHome(),
-                            )),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
+        child: Container(
+          //alignment of text in first page
+          padding: const EdgeInsets.only(
+            left: 160,
           ),
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 100,
+                height: 10,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: const Color(0xffc44536), //the rectangle
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text(
+                "read\nme\na Story",
+                style: TextStyle(
+                  height: 1.5,
+                  letterSpacing: 2,
+                  color: Color(0xffc44536),
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
+        //next button
+        margin: EdgeInsets.all(40),
+        height: 50,
+        width: 100,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100),
+          color: Color(0xfffff8ee),
+        ),
+        child: IconButton(
+          //next button
+          icon: const Icon(
+            Icons.navigate_next,
+            color: Color(0xffc44536),
+            size: 30,
+          ),
+          onPressed: () => Navigator.push(
+              // to navigate
+              context,
+              MaterialPageRoute(
+                builder: (context) => BooksHome(),
+              )),
         ),
       ),
     );
