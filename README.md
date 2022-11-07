@@ -6,7 +6,7 @@
 
 # Introduction:
   
-“Read me a story” will focus on categorizing children's stories into defined topics like honesty, friendship, respect, brave, etc. Depending on the topic that the user wishes to address, "Read me a story" will apply a classifier model based on machine-learning algorithms to classify the stories. 
+“Read me a story” will focus on categorizing children's stories into defined topics like honesty, friendship, respect, brave, etc. Depending on the topic that the user wishes to address, "Read me a story" will apply a classifier model based on machine-learning algorithms to classify the stories. Our goal is to develop an application called “Read me a story” that will make it easy and quick for parents and educators to introduce the manners they want to teach or suggest appropriate responses to specific situations through stories. The user will have a choice between reading or listening to the story.
 
 
 # programming language: 
