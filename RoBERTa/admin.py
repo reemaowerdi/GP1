@@ -41,7 +41,7 @@ HTML_TEXT = '''
        
       <input name='moral' id='moral' style="font-size: 20px;font-weight: 800;"></input> <br /><br /><br />
     
-    <input style="height:50px;width:150px; font-size: 20px;margin-left: 25%;" type="submit" >
+    <input  onClick="alert('Added successfully')" style="height:50px;width:150px; font-size: 20px;margin-left: 25%;" type="submit" >
         </form>
     
     
