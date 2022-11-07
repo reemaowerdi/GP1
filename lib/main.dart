@@ -1,54 +1,37 @@
-import 'package:AudioBooks/book_home.dart';
-import 'package:AudioBooks/book_read.dart';
-import 'package:AudioBooks/books_details.dart';
-import 'package:AudioBooks/books_splash.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+//references
+//https://www.youtube.com/watch?v=1ukSR1GRtMU&list=PL4cUxeGkcC9jLYyp2Aoh6hcWuxFDX6PBJ
+//https://www.youtube.com/watch?v=ok6se5sOthw
+//https://www.youtube.com/watch?v=dkkuMdCkQFo&t=315s
 
-void main() async {
+import 'package:flutter/material.dart';
+import 'package:read_me_a_story/books_splash.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:read_me_a_story/firebase_options.dart';
+
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Read me a book',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.amber,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: "SourceSansPro"),
-      home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => FirebaseFirestore.instance
-              .collection('testing')
-              .add({'timestamp': Timestamp.fromDate(DateTime.now())}),
-          child: Icon(Icons.add),
-        ),
-        body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('testing').snapshots(),
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<QuerySnapshot> snapshot,
-          ) {
-            if (!snapshot.hasData) return const SizedBox.shrink();
-            return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (BuildContext context, int index) {
-                final docData = snapshot.data.docs[index];
-                final dateTime = (docData['timestamp'] as Timestamp).toDate();
-                return ListTile(
-                  title: Text(dateTime.toString()),
-                );
-              },
-            );
-          },
-        ),
+        primarySwatch: Colors.amber,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: "SourceSansPro",
       ),
+      home: const BooksSplash(),
     );
   }
 }
+
