@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "345183958137",
+    "project_id": "read-me-a-story3",
+    "storage_bucket": "read-me-a-story3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345183958137:android:09938eaf637d27d82ad0a8",
+        "android_client_info": {
+          "package_name": "com.reemaaliii.read_me_a_story"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345183958137-oeutl9oef29esea3qoorem3ckkfmgj0u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8WnUOSDLa2hUPrQW8EHj6tQ7dERx27vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345183958137-oeutl9oef29esea3qoorem3ckkfmgj0u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "345183958137-d3v9brchm86n30m25q4sqj6c6crb44ol.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ar.readmeastory3.AudioBooks"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
