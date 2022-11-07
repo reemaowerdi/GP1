@@ -1,23 +1,37 @@
-import 'package:AudioBooks/book_data.dart';
-import 'package:AudioBooks/books_profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:read_me_a_story/books_profile.dart';
 import 'book_model.dart';
 import 'books_details.dart';
 
 class BooksHome extends StatelessWidget {
+  BooksHome({super.key});
+
+  final sections = [
+    "Brave",
+    "Friendship",
+    "Respect",
+    "Honesty",
+    "Patience",
+  ];
+
   @override
   Widget build(BuildContext context) {
+    //morals list page
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/Home2.png"),
+            image: AssetImage("assets/images/home111.PNG"),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: [
             Container(
+              //back button display
               padding: EdgeInsets.only(
                 left: 30,
                 right: 30,
@@ -29,33 +43,33 @@ class BooksHome extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(
-                      Icons.menu,
-                      color: Colors.white,
+                      Icons.keyboard_arrow_left_rounded,
+                      color: Color.fromARGB(255, 252, 251, 251),
                       size: 35,
                     ),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BooksProfile(),
-                      ),
-                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // to navigate
+                    },
                   ),
+                  Spacer(),
                   IconButton(
                     icon: Icon(
                       Icons.search,
                       color: Colors.white,
                       size: 35,
                     ),
-                    onPressed: () {},
+                    onPressed: () {}, //not working yet
                   ),
                 ],
               ),
             ),
             Expanded(
+              //box that has the morals
               child: Container(
                 padding: EdgeInsets.only(
                   top: 50,
-                  left: 50,
+                  left: 30,
+                  right: 30,
                 ),
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -65,44 +79,79 @@ class BooksHome extends StatelessWidget {
                     topRight: Radius.circular(50),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hello,",
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w500,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hello,",
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      "Fahda",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Container(
+                      //the rectangle
+                      margin: EdgeInsets.only(
+                        top: 15,
+                      ),
+                      width: 100,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Color(0xffc44536),
+                      ),
+                    ),
+                    Expanded(
+                      //morals
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          //to fit grid layouts
+                          crossAxisCount: 2,
+                          childAspectRatio: 2,
+                        ),
+                        itemCount: sections.length, //grid
+                        itemBuilder: (context, index) => Card(
+                          elevation: 0,
+                          color: Color.fromARGB(255, 235, 222, 204),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              10,
+                            ),
+                          ),
+                          child: InkWell(
+                            //to go to the books list
+
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      BookSection(scetion: sections[index]),
+                                ),
+                              );
+                            },
+
+                            child: Center(
+                              child: Text(
+                                sections[index],
+                                style: TextStyle(
+                                  //text of morals in grid
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      Text(
-                        "Alice",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 15,
-                          bottom: 30,
-                        ),
-                        width: 100,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Color(0xffc44536),
-                        ),
-                      ),
-                      BookSection(
-                        heading: "Continue Reading",
-                      ),
-                      BookSection(
-                        heading: "Discover More",
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
               ),
             )
@@ -114,129 +163,126 @@ class BooksHome extends StatelessWidget {
 }
 
 class BookSection extends StatelessWidget {
-  final String heading;
-  BookSection({this.heading});
+  final String scetion;
+  const BookSection({super.key, required this.scetion});
   @override
   Widget build(BuildContext context) {
-    List<Book> bookList;
-    if (heading == "Continue Reading") {
-      bookList = recentBooks;
-    } else if (heading == "Discover More") {
-      bookList = allBooks;
-    } else if (heading == "BookShelf") {
-      bookList = allBooks;
-    }
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            heading,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w700,
+          Padding(
+            //layout in book section
+            padding: const EdgeInsets.only(
+              top: 75,
+              right: 30,
             ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-            height: MediaQuery.of(context).size.height * 0.4,
-            child: ListView.builder(
-              itemBuilder: (ctx, i) => GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => BooksDetails(
-                      index: i,
-                      section: heading,
-                    ),
+            child: Row(
+              children: [
+                IconButton(
+                  // back button, books list
+                  icon: Icon(
+                    Icons.keyboard_arrow_left_rounded,
+                    color: Color.fromARGB(255, 1, 1, 1),
+                    size: 35,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Text(
+                  scetion, //moral name
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(
-                            top: 10,
-                            left: 5,
-                          ),
-                          height: MediaQuery.of(context).size.height * 0.27,
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.4),
-                                      blurRadius: 5,
-                                      offset: Offset(8, 8),
-                                      spreadRadius: 1,
-                                    )
-                                  ],
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.asset(
-                                    bookList[i].coverImage,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.27,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  gradient: new LinearGradient(
-                                    colors: [
-                                      Colors.black.withOpacity(0.4),
-                                      Colors.transparent,
-                                      Colors.black.withOpacity(0.4),
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+              ],
+            ),
+          ),
+          Expanded(
+            //to add the book from firebase to list of books
+            child: FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('books')
+                  .where(
+                    'moral',
+                    isEqualTo: scetion,
+                  )
+                  .get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? Center(child: CircularProgressIndicator.adaptive())
+                    : GridView.builder(
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200,
+                          mainAxisExtent: 340,
                         ),
-                        SizedBox(height: 16),
-                        Text(
-                          bookList[i].name,
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          bookList[i].author,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                  ],
+                        padding: EdgeInsets.all(8),
+                        itemCount: snapshot.data?.docs.length,
+                        itemBuilder: (context, index) {
+                          final Book book = Book.fromMap(
+                              snapshot.data?.docs[index].data()
+                                  as Map<String, dynamic>);
+                          return BookCover(book: book);
+                        });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BookCover extends StatelessWidget {
+  final Book book;
+  const BookCover({
+    Key? key,
+    required this.book,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => BooksDetails(
+            //to add the content in books details page
+            book: book,
+          ),
+        ),
+      ),
+      child: Column(
+        //books list
+        children: [
+          SizedBox(
+            child: Card(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/images/booksphoto.webp', //on books list
+                  fit: BoxFit.fill,
                 ),
               ),
-              itemCount: bookList.length,
-              scrollDirection: Axis.horizontal,
             ),
-          )
+          ),
+          Padding(
+            //books title
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              book.title,
+              maxLines: 3,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
         ],
       ),
     );
