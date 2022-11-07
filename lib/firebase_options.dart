@@ -36,7 +36,7 @@ class DefaultFirebaseOptions {
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
           'you can reconfigure this by running the FlutterFire CLI again.',
-        ); 
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '345183958137',
     projectId: 'read-me-a-story3',
     storageBucket: 'read-me-a-story3.appspot.com',
-    iosClientId: '345183958137-32238fs8450u75ehr2861a2se9fbra01.apps.googleusercontent.com',
+    iosClientId:
+        '345183958137-32238fs8450u75ehr2861a2se9fbra01.apps.googleusercontent.com',
     iosBundleId: 'com.reemaaliii.readMeAStory',
   );
 }
