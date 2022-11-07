@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:read_me_a_story/book_model.dart';
 
 class BooksRead extends StatelessWidget {
-  final String loremIpsum =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  final Book book;
+  const BooksRead({
+    Key? key,
+    required this.book,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final listWithWords = book.content.split(' '); // to split story
+
+    final contentList =
+        listWithWords.chunked(100).toList(); //to specify separation
     return Scaffold(
-      backgroundColor: Color(0xfffff8ee),
+      backgroundColor: Color(0xfffff8ee), //background for read story
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -17,93 +26,55 @@ class BooksRead extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
+                      //organizing story content
                       padding: EdgeInsets.symmetric(
                         vertical: 20,
                         horizontal: 20,
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween, //organize buttons
                         children: [
                           IconButton(
                             icon: Icon(
-                              Icons.arrow_back,
+                              Icons.arrow_back, //arrow back button
                               color: Colors.black,
                               size: 35,
                             ),
                             onPressed: () => Navigator.pop(context),
                           ),
                           IconButton(
+                            //fav button
                             icon: Icon(
                               Icons.favorite_border,
                               color: Colors.black,
                               size: 35,
                             ),
-                            onPressed: () {},
+                            onPressed: () {}, //not working yet
                           )
                         ],
                       ),
                     ),
                     Expanded(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: 10,
-                            left: 40,
-                            right: 20,
-                          ),
+                        child: PageView.builder(
+                      //to navigate in story
+                      itemCount: contentList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(12),
                           child: Text(
-                            loremIpsum,
+                            // decoration of text
+                            contentList[index].join(' '),
+                            textAlign: TextAlign.justify,
                             style: TextStyle(
                               fontSize: 20,
                               letterSpacing: 1.5,
                               height: 1.5,
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 20,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton.icon(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.bookmark,
-                            ),
-                            label: Text(
-                              "Notes",
-                              style: TextStyle(
-                                fontSize: 22,
-                              ),
-                            ),
-                          ),
-                          RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: "246/",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "378",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ]),
-                          )
-                        ],
-                      ),
-                    ),
+                        );
+                      },
+                    )),
                   ],
                 ),
               ),
@@ -112,5 +83,21 @@ class BooksRead extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+extension IterableExtensions<E> on Iterable<E> {
+  Iterable<List<E>> chunked(int chunkSize) sync* {
+    if (length <= 0) {
+      yield [];
+      return;
+    }
+    int skip = 0;
+    while (skip < length) {
+      final chunk = this.skip(skip).take(chunkSize);
+      yield chunk.toList(growable: false);
+      skip += chunkSize;
+      if (chunk.length < chunkSize) return;
+    }
   }
 }
