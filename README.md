@@ -15,7 +15,7 @@
   
 “Read me a story” will focus on categorizing children's stories into defined topics like honesty, friendship, respect, brave, etc. Depending on the topic that the user wishes to address, "Read me a story" will apply a classifier model based on machine-learning algorithms to classify the stories. 
 
-+# programming language: 
+# programming language: 
 
 
 [![My Skills](https://skillicons.dev/icons?i=vscode,html,python,dart)](https://skillicons.dev)
