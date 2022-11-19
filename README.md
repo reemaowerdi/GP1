@@ -3,7 +3,7 @@
 <div align="center">
   
   <a href="https://github.com/reemaowerdi/GP1">
-    <img src="./logo.png"" alt="Logo" width="250" height="170">
+    <img src="./logo1.png"" alt="Logo" width="500" height="300">
   </a>
 
 </div>
