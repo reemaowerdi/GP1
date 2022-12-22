@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:read_me_a_story/Authentication/signIn_screen.dart';
 import 'package:read_me_a_story/book_home.dart';
 
 class BooksSplash extends StatelessWidget {
@@ -71,11 +73,16 @@ class BooksSplash extends StatelessWidget {
             size: 30,
           ),
           onPressed: () => Navigator.push(
-              // to navigate
-              context,
-              MaterialPageRoute(
-                builder: (context) => BooksHome(),
-              )),
+            // to navigate
+            context,
+            MaterialPageRoute(
+              builder: (context) => StreamBuilder(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (context, snapshot) {
+                    return snapshot.hasData ? BooksHome() : SignInScreen();
+                  }),
+            ),
+          ),
         ),
       ),
     );
