@@ -1,0 +1,10 @@
+<html>
+<body style="font-size: 22px;">
+       <h1>Delete</h1>
+       {% for key,value in registerList.items() %}
+       {% for data in value.values() %}
+         <h4>{{ data }}</h4>
+       {% endfor %}
+     {% endfor %}
+    </body>
+    </html>
