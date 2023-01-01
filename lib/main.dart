@@ -11,7 +11,8 @@ import 'package:read_me_a_story/firebase_options.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    //wist
+    options: DefaultFirebaseOptions.currentPlatform, //wist
   );
   runApp(const MyApp());
 }
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: "SourceSansPro",
       ),
-      home: const BooksSplash(),
+      home: const BooksSplash(), //wist
     );
   }
 }

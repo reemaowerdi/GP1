@@ -1,18 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:read_me_a_story/book_read.dart';
 
 import 'book_model.dart';
 
-class BooksDetails extends StatelessWidget {
+class BooksDetails extends StatefulWidget {
   final Book book;
 
-  const BooksDetails({super.key, required this.book}); //page of book cover
+  const BooksDetails({super.key, required this.book});
+  @override
+  State<BooksDetails> createState() => _BooksDetailsState();
+}
+
+class _BooksDetailsState extends State<BooksDetails> {
+  late bool isFavourite;
+
+  @override
+  void initState() {
+    isFavourite = widget.book.favouritesByIds.contains(
+      FirebaseAuth.instance.currentUser?.uid ?? '',
+    );
+    super.initState();
+  }
+
+  //page of book cover
   @override
   Widget build(BuildContext context) {
+    //again wist
     return Scaffold(
       backgroundColor: Color(0xfffff8ee),
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height, //wist
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
@@ -37,16 +57,46 @@ class BooksDetails extends StatelessWidget {
                               color: Colors.black,
                               size: 35,
                             ),
-                            onPressed: () => Navigator.of(context).pop(),
+                            onPressed: () =>
+                                Navigator.of(context).pop(), //ws context
                           ),
                           IconButton(
                             //fav button
                             icon: Icon(
-                              Icons.favorite_border,
-                              color: Colors.black,
+                              isFavourite
+                                  ? Icons.favorite_outlined
+                                  : Icons.favorite_border,
+                              color: isFavourite ? Colors.red : Colors.black,
                               size: 35,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              try {
+                                if (isFavourite) {
+                                  FirebaseFirestore.instance
+                                      .collection('books')
+                                      .doc(widget.book.id)
+                                      .update({
+                                    'favouritesByIds': FieldValue.arrayRemove(
+                                      [FirebaseAuth.instance.currentUser?.uid],
+                                    )
+                                  });
+                                } else {
+                                  FirebaseFirestore.instance
+                                      .collection('books')
+                                      .doc(widget.book.id)
+                                      .update({
+                                    'favouritesByIds': FieldValue.arrayUnion(
+                                      [FirebaseAuth.instance.currentUser?.uid],
+                                    )
+                                  });
+                                }
+                                setState(() {
+                                  isFavourite = !isFavourite;
+                                });
+                              } catch (e) {
+                                print(e);
+                              }
+                            },
                           ),
                         ],
                       ),
@@ -110,7 +160,7 @@ class BooksDetails extends StatelessWidget {
                     ),
                     Text(
                       //book title
-                      book.title,
+                      widget.book.title,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,
@@ -137,7 +187,8 @@ class BooksDetails extends StatelessWidget {
                             right: 20,
                           ),
                           child: Text(
-                            book.content, //to retrieve story
+                            widget.book
+                                .content, //is this to retrieve story?, whats the diff between content and context?
                             style: TextStyle(
                               fontSize: 20,
                               letterSpacing: 1.5,
@@ -193,7 +244,8 @@ class BooksDetails extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => BooksRead(
-                                book: book,
+                                // to get story to read page
+                                book: widget.book,
                               ),
                             ),
                           ),

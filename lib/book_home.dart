@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:read_me_a_story/books_profile.dart';
+import 'package:read_me_a_story/favourtes_screen.dart';
+
 import 'book_model.dart';
 import 'books_details.dart';
 
@@ -54,11 +55,30 @@ class BooksHome extends StatelessWidget {
                   Spacer(),
                   IconButton(
                     icon: Icon(
-                      Icons.search,
+                      Icons.favorite,
                       color: Colors.white,
                       size: 35,
                     ),
-                    onPressed: () {}, //not working yet
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => FavouratesScreen(),
+                        ),
+                      );
+                    }, //not working yet
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    }, //not working yet
                   ),
                 ],
               ),
@@ -164,9 +184,10 @@ class BooksHome extends StatelessWidget {
 
 class BookSection extends StatelessWidget {
   final String scetion;
-  const BookSection({super.key, required this.scetion});
+  const BookSection({super.key, required this.scetion}); //wist, scetion=moral?
   @override
   Widget build(BuildContext context) {
+    //wist, buildcontext?
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +208,7 @@ class BookSection extends StatelessWidget {
                     size: 35,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(); //ws context?
                   },
                 ),
                 Text(
@@ -201,7 +222,7 @@ class BookSection extends StatelessWidget {
             ),
           ),
           Expanded(
-            //to add the book from firebase to list of books
+            //to add the book from firebase to list of books, right?
             child: FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('books')
@@ -210,19 +231,23 @@ class BookSection extends StatelessWidget {
                     isEqualTo: scetion,
                   )
                   .get(),
-              builder: (BuildContext context,
+              builder: (BuildContext context, //ws context?
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? Center(child: CircularProgressIndicator.adaptive())
+                //wist 214-229
+                return snapshot.connectionState ==
+                        ConnectionState.waiting //if the connection is waiting
+                    ? Center(
+                        child: CircularProgressIndicator
+                            .adaptive()) // waiting circle
                     : GridView.builder(
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 200,
                           mainAxisExtent: 340,
                         ),
                         padding: EdgeInsets.all(8),
-                        itemCount: snapshot.data?.docs.length,
+                        itemCount: snapshot.data?.docs.length, //list of docs
                         itemBuilder: (context, index) {
-                          final Book book = Book.fromMap(
+                          final Book book = Book.fromMap(//u
                               snapshot.data?.docs[index].data()
                                   as Map<String, dynamic>);
                           return BookCover(book: book);
@@ -237,7 +262,8 @@ class BookSection extends StatelessWidget {
 }
 
 class BookCover extends StatelessWidget {
-  final Book book;
+  //wist
+  final Book book; // books fetched from firebase, one book at atime
   const BookCover({
     Key? key,
     required this.book,
@@ -245,6 +271,7 @@ class BookCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //context=story?
     return InkWell(
       onTap: () => Navigator.push(
         context,
@@ -271,7 +298,7 @@ class BookCover extends StatelessWidget {
           ),
           Padding(
             //books title
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8), //wist
             child: Text(
               book.title,
               maxLines: 3,

@@ -17,8 +17,8 @@ class BooksRead extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xfffff8ee), //background for read story
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height, //wist
+        width: MediaQuery.of(context).size.width, //size of screen
         child: Stack(
           children: [
             SafeArea(
@@ -57,14 +57,14 @@ class BooksRead extends StatelessWidget {
                     ),
                     Expanded(
                         child: PageView.builder(
-                      //to navigate in story
-                      itemCount: contentList.length,
+                      //is this to navigate in story?
+                      itemCount: contentList.length, //ws contentlist
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
                             // decoration of text
-                            contentList[index].join(' '),
+                            contentList[index].join(' '), //wist
                             textAlign: TextAlign.justify,
                             style: TextStyle(
                               fontSize: 20,
@@ -87,6 +87,8 @@ class BooksRead extends StatelessWidget {
 }
 
 extension IterableExtensions<E> on Iterable<E> {
+  // for splitting
+  //wist
   Iterable<List<E>> chunked(int chunkSize) sync* {
     if (length <= 0) {
       yield [];
