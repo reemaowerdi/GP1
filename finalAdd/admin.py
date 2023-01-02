@@ -144,24 +144,7 @@ def logout():
 def options():
     return render_template('options.html')
 
-#cancel code
 
-""" def save_Data2():
-    db_store = firestore.client()
-    users_ref = db_store.collection(u'deletedstories')
-    docs = users_ref.stream()
-    checklength = []
-    for doc in docs:
-        checklength.append(doc)
-
-    dict1 = {}
-    dict1['content'] = request.form.get("content")
-    dict1['title'] = request.form.get("title")
-    dict1['moral'] = request.form.get("moral")  # this shows overload error
-
-    doc_ref = db_store.collection(u'deletedstories').document(
-        u''+str(len(checklength)+1))
-    doc_ref.set(dict1) """
 
     #delete
 @app.route('/Delete')
@@ -199,6 +182,25 @@ def save_Data():
         u''+str(len(checklength)+1))
     doc_ref.set(dict1)
     return "save sucessfully"
+
+    #cancel code
+
+""" def save_Data2():
+    db_store = firestore.client()
+    users_ref = db_store.collection(u'deletedstories')
+    docs = users_ref.stream()
+    checklength = []
+    for doc in docs:
+        checklength.append(doc)
+
+    dict1 = {}
+    dict1['content'] = request.form.get("content")
+    dict1['title'] = request.form.get("title")
+    dict1['moral'] = request.form.get("moral")  # this shows overload error
+
+    doc_ref = db_store.collection(u'deletedstories').document(
+        u''+str(len(checklength)+1))
+    doc_ref.set(dict1) """
 
 
 @app.route('/Add_pred', methods=['GET', 'POST'])
