@@ -14,7 +14,7 @@ from flask import Flask, session, render_template, request, redirect
 import firebase_admin
 from firebase_admin import db
 from firebase_admin import credentials
-from flask import Flask, request, url_for , flash , jsonify
+from flask import Flask, request, url_for ,flash
 from firebase_admin import firestore
 import pyrebase
 
@@ -129,7 +129,7 @@ def index():
             session['user'] = email
             return redirect(url_for('options'))
         except:
-             flash('Email or Password is incorrect')
+            flash('Email or Password is incorrect')
     return render_template('home.html')
 # log out
 
@@ -144,16 +144,31 @@ def logout():
 def options():
     return render_template('options.html')
 
-#delete 
+#cancel code
 
+""" def save_Data2():
+    db_store = firestore.client()
+    users_ref = db_store.collection(u'deletedstories')
+    docs = users_ref.stream()
+    checklength = []
+    for doc in docs:
+        checklength.append(doc)
+
+    dict1 = {}
+    dict1['content'] = request.form.get("content")
+    dict1['title'] = request.form.get("title")
+    dict1['moral'] = request.form.get("moral")  # this shows overload error
+
+    doc_ref = db_store.collection(u'deletedstories').document(
+        u''+str(len(checklength)+1))
+    doc_ref.set(dict1) """
+
+    #delete
 @app.route('/Delete')
 def delete():
-     users_ref = db.collection(u'books')
-     docs = users_ref.stream()
-     for doc in docs:
-        title = doc.get('title')
-        
-     return render_template('delete.html')
+    db_store = firestore.client()
+    users_ref = db_store.collection(u'books')
+    docs = users_ref.stream()
     
 # add
 
@@ -174,6 +189,7 @@ def save_Data():
 
     print(request.form)
     dict1 = {}
+    dict1['titleSmall'] = request.form.get("titleSmall")
     dict1['title'] = request.form.get("title")
     dict1['content'] = request.form.get("content")
     dict1['picture'] = request.form.get("picture")
@@ -183,25 +199,6 @@ def save_Data():
         u''+str(len(checklength)+1))
     doc_ref.set(dict1)
     return "save sucessfully"
-
-  #cancel code
-
-""" def save_Data2():
-    db_store = firestore.client()
-    users_ref = db_store.collection(u'deletedstories')
-    docs = users_ref.stream()
-    checklength = []
-    for doc in docs:
-        checklength.append(doc)
-
-    dict1 = {}
-    dict1['content'] = request.form.get("content")
-    dict1['title'] = request.form.get("title")
-    dict1['moral'] = request.form.get("moral")  # this shows overload error
-
-    doc_ref = db_store.collection(u'deletedstories').document(
-        u''+str(len(checklength)+1))
-    doc_ref.set(dict1) """
 
 
 @app.route('/Add_pred', methods=['GET', 'POST'])
