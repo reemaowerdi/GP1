@@ -165,6 +165,12 @@ def edit():
         
         return render_template('edit.html')
 
+        #edit-form
+@app.route('/editform', methods=["GET", "POST"])
+def editform():
+    return render_template('edit-form.html')
+
+
     #delete
 @app.route('/Delete', methods =["GET","POST"])
 def delete():
@@ -202,10 +208,11 @@ def hello():
 
 @app.route('/Save_data', methods=['GET', 'POST'])
 def save_Data():
- if request.form['action1'] == 'approve':
+#  if request.form['action1'] == 'approve':
     db_store = firestore.client()
     print(request.form)
     dict1 = {}
+    dict1['titleSmall'] = request.form.get("titleSmall")
     dict1['title'] = request.form.get("title")
     dict1['content'] = request.form.get("content")
     dict1['picture'] = request.form.get("picture")
@@ -215,17 +222,17 @@ def save_Data():
     return "save sucessfully"
 
 
- elif request.form['action'] == 'cancel':
-    db_store = firestore.client()
-    print(request.form)
-    dict1 = {}
-    dict1['title'] = request.form.get("title")
-    dict1['content'] = request.form.get("content")
-    dict1['picture'] = request.form.get("picture")
-    dict1['moral'] = request.form.get("moral")  # this shows overload error
+#  elif request.form['action'] == 'cancel':
+#     db_store = firestore.client()
+#     print(request.form)
+#     dict1 = {}
+#     dict1['title'] = request.form.get("title")
+#     dict1['content'] = request.form.get("content")
+#     dict1['picture'] = request.form.get("picture")
+#     dict1['moral'] = request.form.get("moral")  # this shows overload error
 
-    db_store.collection(u'canceledStories').add(dict1)
-    return "canceled sucessfully"
+#     db_store.collection(u'canceledStories').add(dict1)
+#     return "canceled sucessfully"
 
 
 
