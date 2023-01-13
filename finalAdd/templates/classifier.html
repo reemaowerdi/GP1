@@ -148,7 +148,7 @@
                         </textarea><br>
 
                         <button   id="classifyButton">classify content</button><br> <br>
-                        <audio id="audio" src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"></audio>
+                        <audio id="audio" src="{{url_for('static', filename='audio.mp3')}}"></audio>
 
                         <span style="font-weight: bold; background-color: #C69A6F;" id="moral"></span>
 
@@ -160,7 +160,7 @@
                         <br /><br /><br />
 
                         <input style="float: right;" class="button button2" type="submit"
-                            value="add" name="action1">
+                            value="add" name="action1" id="add">
 
                         <input style="height:50px;width:150px; font-size: 20px;margin-left: 15%;" type="submit" value="cancel" name="action" >
 
@@ -239,10 +239,13 @@
                    
 
                     // const querySnapshot = await getDocs(collection(db, "posts"));
+                    
+                    
                     const citiesRef = collection(db, "books");
                     const q = query(citiesRef, where("titleSmall", "==", titleSmall));
                     const querySnapshot = await getDocs(q);
                     
+
                     //validation
                     if( document.myForm.title.value == "" ) {
                          alert( "Please provide story title!" );
@@ -263,12 +266,12 @@
                     if (querySnapshot.size === 0) { // no duplicate found
 
                         axios.post("/Save_data", form).then(response => {
-
+                           
                             console.log(response.data);
                             alert("story Added Successfully");
                         }).catch(e => {
                             console.log(e);
-                            alert("Failed to add");
+                            alert("Failed ");
                         })
 
                     }else{
