@@ -17,7 +17,7 @@ from firebase_admin import credentials
 from flask import Flask, request, url_for ,flash , jsonify 
 from firebase_admin import firestore
 import pyrebase
-
+import time
 databaseURL = 'https://read-me-a-story3-default-rtdb.firebaseio.com/'
 
 cred_object = credentials.Certificate("./config/firebase.json")
@@ -198,6 +198,19 @@ def delete():
             flash(title, 'category2')
         #return jsonify(title)
         return render_template('delete.html')
+
+@app.route("/forward/", methods=['POST'])
+def move_forward():
+    #Moving forward code
+    #forward_message = "Moving Forward..."
+    #return render_template('index.html', forward_message=forward_message)
+    title2 = request.form['delete']
+    docs = db.collection(u'books').where("title", "==", title2).get()
+    for doc in docs:
+        key = doc.id
+        db.collection(u'books').document(key).delete()
+    flash('book has been removed successfully', 'category3')
+    return render_template('delete.html')
 # add
 
 
@@ -208,32 +221,37 @@ def hello():
 
 @app.route('/Save_data', methods=['GET', 'POST'])
 def save_Data():
-#  if request.form['action1'] == 'approve':
-    db_store = firestore.client()
     print(request.form)
+
+    curr_time = str(time.time_ns())
+
     dict1 = {}
     dict1['titleSmall'] = request.form.get("titleSmall")
     dict1['title'] = request.form.get("title")
     dict1['content'] = request.form.get("content")
     dict1['picture'] = request.form.get("picture")
     dict1['moral'] = request.form.get("moral")  # this shows overload error
+    dict1['createdOn'] = firestore.SERVER_TIMESTAMP
 
-    db_store.collection(u'books').add(dict1)
-    return "save sucessfully"
+    db.collection(u'books').document(curr_time).set(dict1)
+    return "save successfully"
 
+@app.route('/Cancel_data', methods=['GET', 'POST'])
+def cancel_Data():
+    print(request.form)
 
-#  elif request.form['action'] == 'cancel':
-#     db_store = firestore.client()
-#     print(request.form)
-#     dict1 = {}
-#     dict1['title'] = request.form.get("title")
-#     dict1['content'] = request.form.get("content")
-#     dict1['picture'] = request.form.get("picture")
-#     dict1['moral'] = request.form.get("moral")  # this shows overload error
+    curr_time = str(time.time_ns())
 
-#     db_store.collection(u'canceledStories').add(dict1)
-#     return "canceled sucessfully"
+    dict1 = {}
+    dict1['titleSmall'] = request.form.get("titleSmall")
+    dict1['title'] = request.form.get("title")
+    dict1['content'] = request.form.get("content")
+    dict1['picture'] = request.form.get("picture")
+    dict1['moral'] = request.form.get("moral")  # this shows overload error
+    dict1['createdOn'] = firestore.SERVER_TIMESTAMP
 
+    db.collection(u'canceledStories').document(curr_time).set(dict1)
+    return "canceled sucessfully"
 
 
 
@@ -285,7 +303,7 @@ def prediction():
 # In[ ]:
 if __name__ == "__main__":
     # app.debug = True
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
 
 
 # In[ ]:
