@@ -17,6 +17,8 @@ from firebase_admin import credentials
 from flask import Flask, request, url_for ,flash , jsonify 
 from firebase_admin import firestore
 import pyrebase
+from datetime import timedelta
+from flask import session, app
 import time
 databaseURL = 'https://read-me-a-story3-default-rtdb.firebaseio.com/'
 
@@ -30,6 +32,7 @@ app = Flask(__name__)
 
 db = firestore.client()
 todo_ref = db.collection(u'books')
+todo_ref2= db.collection(u'reader')
 
 config = {
     'apiKey': "AIzaSyA9f97gGu55wjvB7Nsr75VJHFm71w1b7p0",
@@ -131,11 +134,15 @@ def index():
             user = auth.sign_in_with_email_and_password(email, password)
             session['user'] = email
             return redirect(url_for('options'))
+            
         except:
             flash('Email or Password is incorrect')
     return render_template('home.html')
 # log out
-
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=5)
 
 @app.route('/logout')
 def logout():
@@ -145,7 +152,100 @@ def logout():
 
 @app.route('/options')
 def options():
-    return render_template('options.html')
+     todo_id = request.args.get('id')  
+     if todo_id:
+         todo = todo_ref.document(todo_id).get(field_paths={'moral'})
+         return jsonify(todo.to_dict()), 200
+     else:
+          docs = todo_ref.stream()
+          countP=0
+          countB=0
+          countH=0
+          countF=0
+          countR=0
+          for doc in docs:
+            moral = u'{}'.format(doc.to_dict()['moral'])
+            if moral=="Patience":
+             value = countP + 1
+             countP=value
+             
+            if moral=="Brave":
+             value = countB + 1
+             countB=value
+
+            if moral=="Honesty":
+              value = countH + 1
+              countH=value 
+
+            if moral=="Friendship":
+              value = countF + 1
+              countF=value  
+              
+            if moral=="Respect":
+              value = countR + 1
+              countR=value  
+     total=countP+countB+countF+countH+countR
+     
+     m1="The total is: {}".format(total)   
+     m1=f"The total is: {total} "
+     m1="The total is %d " % (total)
+     m1="The Total Number Of Stories: " + str(total)
+
+    #  m2="Respect: {}".format(countR)   
+    #  m2=f"Respect: {countR} "
+    #  m2="Respect %d " % (countR)
+    #  m2="Respect: " + str(countR)
+     
+    #  m3="Brave: {}".format(countB)   
+    #  m3=f"Brave: {countB} "
+    #  m3="Brave %d " % (countB)
+    #  m3="Brave: " + str(countB)
+
+     
+    #  m4="Honesty: {}".format(countH)   
+    #  m4=f"Honesty: {countH} "
+    #  m4="Honesty %d " % (countH)
+    #  m4="Honesty: " + str(countH)
+
+     
+    #  m5="Patience: {}".format(countP)   
+    #  m5=f"Patience: {countP} "
+    #  m5="Patience %d " % (countP)
+    #  m5="Patience: " + str(countP)
+
+     
+    #  m6="Friendship: {}".format(countF)   
+    #  m6=f"Friendship: {countF} "
+    #  m6="Friendship %d " % (countF)
+    #  m6="Friendship: " + str(countF)
+
+     flash(m1 , 'category1')
+     flash(countR, 'category2')
+     flash(countF, 'category3')
+     flash(countH, 'category4')
+     flash(countP, 'category5')
+     flash(countB, 'category6')
+
+     todo_id = request.args.get('id')  
+     if todo_id:
+         todo = todo_ref2.document(todo_id).get(field_paths={'ID'})
+         return jsonify(todo.to_dict()), 200
+     else:
+          docs = todo_ref2.stream()
+          countUser=0
+          for doc in docs:
+            user = u'{}'.format(doc.to_dict()['ID'])
+            if "ID":
+             value = countUser + 1
+             countUser=value
+     U="N: {}".format(countUser)   
+     U=f"N: {countUser} "
+     U="N %d " % (countUser)
+     U="Number Of Users: " + str(countUser)
+
+     flash(U , 'category7')  
+
+     return render_template('options.html')
 
 # edit 
 
