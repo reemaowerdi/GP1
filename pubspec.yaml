@@ -29,20 +29,25 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  cloud_firestore: ^4.0.2
+  audio_wave: ^0.1.4
+  auto_size_text: ^3.0.0
+  cached_network_image: ^3.2.3
+  cloud_firestore: ^4.2.0
+  connectivity_plus: ^3.0.3
   cupertino_icons: ^1.0.5
-  firebase_core: ^2.1.0
-  firebase_ui_firestore: ^1.0.2
+  firebase_auth: ^4.2.1
+  firebase_core: ^2.4.0
   flutter:
     sdk: flutter
+  flutter_switch: ^0.3.2
+  flutter_tts: ^3.6.3
+  get: ^4.6.5
+  page_view_dot_indicator: ^2.1.0
+  persistent_bottom_nav_bar: ^5.0.2
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 
@@ -76,5 +81,8 @@ flutter:
           weight: 500
         - asset: assets/fonts/SourceSansPro-Bold.ttf
           weight: 700
+    - family: Arial
+      fonts:
+        - asset: assets/fonts/arial.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

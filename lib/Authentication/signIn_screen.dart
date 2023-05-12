@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:read_me_a_story/Authentication/signUp_screen.dart';
 import 'package:read_me_a_story/book_home.dart';
+import 'package:read_me_a_story/home.dart';
 
 class SignInScreen extends StatefulWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -35,39 +37,42 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/home111.PNG"),
-            fit: BoxFit.cover,
-          ),
-        ),
+    final Size size = Get.size;
+
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xffB64F3D),
+    body: Container(
+    decoration: const BoxDecoration(
+    image: DecorationImage(
+    image: AssetImage("assets/images/home101.jpeg"),
+    fit: BoxFit.cover,
+    ),
+    ),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.only(
-                left: 30,
-                right: 30,
-                top: 70,
-                bottom: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_arrow_left_rounded,
-                      color: Color.fromARGB(255, 252, 251, 251),
-                      size: 35,
+            SizedBox(
+              height: size.height * 0.1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      onPressed: () async {
+                        Get.back();
+                      }, //not working yet
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  Spacer(),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -80,6 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     right: 30,
                   ),
                   width: double.infinity,
+                  height: 500,
                   decoration: const BoxDecoration(
                     color: Color(0xfffff8ee),
                     borderRadius: BorderRadius.only(
@@ -87,20 +93,19 @@ class _SignInScreenState extends State<SignInScreen> {
                       topRight: Radius.circular(50),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: ListView(
                     children: [
                       const Text(
                         "Welcome,",
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: 40,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const Text(
                         "Please login to continue",
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 32,
                         ),
                       ),
                       const SizedBox(
@@ -118,6 +123,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         decoration: const InputDecoration(
                           label: Text(
                             'Email',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                       ),
@@ -137,6 +145,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         decoration: const InputDecoration(
                           label: Text(
                             'Password',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                       ),
@@ -157,12 +168,12 @@ class _SignInScreenState extends State<SignInScreen> {
                               );
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(
-                                builder: (context) => BooksHome(),
+                                builder: (context) => Home(),
                               ));
                             }
                           } catch (e) {
                             setState(() {
-                              errorMessage = e.toString();
+                              errorMessage = 'Incorrect email or password';
                             });
                           }
                           setState(() {
@@ -198,15 +209,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         errorMessage,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 35,
                           color: Colors.red,
                         ),
                       ),
-                      Spacer(),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
-                          vertical: 32,
+                          vertical: 40,
                         ),
                         child: TextButton(
                           onPressed: () {
@@ -234,6 +244,7 @@ class _SignInScreenState extends State<SignInScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 }

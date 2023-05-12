@@ -1,4 +1,4 @@
-import 'dart:convert'; //wist
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
@@ -6,33 +6,38 @@ class Book {
   final String id;
   final String title;
   final String moral;
-  final String imageStr;
+  final String picture;
   final String content; // story book.content
   List<String> favouritesByIds;
+  int? bookMarkedPage;
+
   Book({
     required this.id,
     required this.title,
     required this.moral,
-    required this.imageStr,
+    required this.picture,
     required this.content,
     required this.favouritesByIds,
+    this.bookMarkedPage,
   });
 
   Book copyWith({
     String? id,
     String? title,
     String? moral,
-    String? imageStr,
+    String? picture,
     String? content,
     List<String>? favouritesByIds,
+    int? bookMarkedPage,
   }) {
     return Book(
       id: id ?? this.id,
       title: title ?? this.title,
       moral: moral ?? this.moral,
-      imageStr: imageStr ?? this.imageStr,
+      picture: picture ?? this.picture,
       content: content ?? this.content,
       favouritesByIds: favouritesByIds ?? this.favouritesByIds,
+      bookMarkedPage: bookMarkedPage ?? this.bookMarkedPage,
     );
   }
 
@@ -50,9 +55,10 @@ class Book {
       id: map['id'] ?? '',
       title: map['title'] ?? '',
       moral: map['moral'] ?? '',
-      imageStr: map['imageStr'] ?? '',
+      picture: map['picture'] ?? '',
       content: map['content'] ?? '',
       favouritesByIds: List<String>.from(map['favouritesByIds'] ?? []),
+      bookMarkedPage: map['bookMarkedPage']?.toInt(),
     );
   }
 
@@ -70,9 +76,10 @@ class Book {
       'id': id,
       'title': title,
       'moral': moral,
-      'imageStr': imageStr,
+      'picture': picture,
       'content': content,
       'favouritesByIds': favouritesByIds,
+      'bookMarkedPage': bookMarkedPage,
     };
   }
 
@@ -82,7 +89,7 @@ class Book {
 
   @override
   String toString() {
-    return 'Book(id: $id, title: $title, moral: $moral, imageStr: $imageStr, content: $content, favouritesByIds: $favouritesByIds)';
+    return 'Book(id: $id, title: $title, moral: $moral, picture: $picture, content: $content, favouritesByIds: $favouritesByIds, bookMarkedPage: $bookMarkedPage)';
   }
 
   @override
@@ -93,9 +100,10 @@ class Book {
         other.id == id &&
         other.title == title &&
         other.moral == moral &&
-        other.imageStr == imageStr &&
+        other.picture == picture &&
         other.content == content &&
-        listEquals(other.favouritesByIds, favouritesByIds);
+        listEquals(other.favouritesByIds, favouritesByIds) &&
+        other.bookMarkedPage == bookMarkedPage;
   }
 
   @override
@@ -103,8 +111,9 @@ class Book {
     return id.hashCode ^
         title.hashCode ^
         moral.hashCode ^
-        imageStr.hashCode ^
+        picture.hashCode ^
         content.hashCode ^
-        favouritesByIds.hashCode;
+        favouritesByIds.hashCode ^
+        bookMarkedPage.hashCode;
   }
 }

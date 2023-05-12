@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:read_me_a_story/book_home.dart';
+import 'package:read_me_a_story/home.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   var signUPFormKey = GlobalKey<FormState>();
+  late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
@@ -21,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
+    nameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
@@ -29,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -37,39 +42,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/home111.PNG"),
-            fit: BoxFit.cover,
-          ),
-        ),
+    final Size size = Get.size;
+
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color(0xffB64F3D),
+    body: Container(
+    decoration: const BoxDecoration(
+    image: DecorationImage(
+    image: AssetImage("assets/images/home101.jpeg"),
+    fit: BoxFit.cover,
+    ),
+    ),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.only(
-                left: 30,
-                right: 30,
-                top: 70,
-                bottom: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_arrow_left_rounded,
-                      color: Color.fromARGB(255, 252, 251, 251),
-                      size: 35,
+            SizedBox(
+              height: size.height * 0.1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      onPressed: () async {
+                        Get.back();
+                      }, //not working yet
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  Spacer(),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -89,24 +97,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       topRight: Radius.circular(50),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: ListView(
                     children: [
                       const Text(
                         "Hello,",
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: 32,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const Text(
                         "Please register to continue",
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 24,
                         ),
                       ),
                       const SizedBox(
                         height: 32,
+                      ),
+                      TextFormField(
+                        controller: nameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please provide a name';
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          label: Text(
+                            'Name',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
                       ),
                       TextFormField(
                         controller: emailController,
@@ -120,6 +148,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: const InputDecoration(
                           label: Text(
                             'Email',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                       ),
@@ -139,6 +170,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: const InputDecoration(
                           label: Text(
                             'Password',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                       ),
@@ -160,6 +194,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: const InputDecoration(
                           label: Text(
                             'Confirm Password',
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
                         ),
                       ),
@@ -173,14 +210,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           });
                           try {
                             if (signUPFormKey.currentState!.validate()) {
-                              await FirebaseAuth.instance
+                              final userCredentials = await FirebaseAuth
+                                  .instance
                                   .createUserWithEmailAndPassword(
                                 email: emailController.text.trim(),
                                 password: passwordController.text.trim(),
                               );
+
+                              if (userCredentials.user != null) {
+                                await userCredentials.user!.updateDisplayName(
+                                  nameController.text.trim(),
+                                );
+                              }
+
                               Navigator.of(context)
                                   .pushReplacement(MaterialPageRoute(
-                                builder: (context) => BooksHome(),
+                                builder: (context) => Home(),
                               ));
                             }
                           } catch (e) {
@@ -225,11 +270,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Colors.red,
                         ),
                       ),
-                      Spacer(),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
-                          vertical: 32,
+                          vertical: 16,
                         ),
                         child: TextButton(
                           onPressed: () {
@@ -253,6 +297,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 }
