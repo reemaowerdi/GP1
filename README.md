@@ -35,7 +35,7 @@ or in  Visual Studio :
 *same steps but you shoild install libraries 
 
 
-to add the story in the applicaton :
+to add new story to the applicaton :
 * open RoBERTa folder then open admin.py 
 * run the code 
 * for Windows write in terminal (python -m admin run) and for mac (python3 admin.py)
@@ -43,4 +43,5 @@ to add the story in the applicaton :
 
 to run the appllication for mac: 
 * you need to download Xcode , flutter and Visual Studio
+* open simulator 
 * run main.dart 
